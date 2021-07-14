@@ -17,16 +17,18 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
-import React from "react";
+import React, { useEffect } from "react";
 import { BsGearFill } from "react-icons/bs";
 import { FaRss } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { HiCollection } from "react-icons/hi";
 import { MdHome } from "react-icons/md";
+import { useUserDBContext } from "../../context/UserDBContext";
 
 export default function AppShell({ user, children }) {
   const sidebar = useDisclosure();
   const router = useRouter();
+  const [userDBFromContext, setUserDBFromContext] = useUserDBContext();
 
   const NavItem = (props) => {
     const { icon, children, ...rest } = props;
@@ -108,8 +110,8 @@ export default function AppShell({ user, children }) {
         <NavItem icon={HiCollection} route={"/app/leaderboard"}>
           Leaderboard
         </NavItem>
-        <NavItem icon={BsGearFill} route={"/app/settings"}>
-          Settings
+        <NavItem icon={BsGearFill} route={"/app/history"}>
+          Bet History
         </NavItem>
       </Flex>
     </Box>
@@ -152,6 +154,12 @@ export default function AppShell({ user, children }) {
           />
           <Box flexGrow='1'></Box>
           <Flex align='center'>
+            <Text mr={3}>
+              Points: {userDBFromContext ? userDBFromContext.score : null}
+            </Text>
+            <Text mr={3}>
+              {userDBFromContext ? userDBFromContext.nickName : null}
+            </Text>
             <Menu>
               <MenuButton
                 as={Button}

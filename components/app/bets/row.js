@@ -23,10 +23,10 @@ const Row = ({ match, setPicks, index, picks, total, setTotal }) => {
 
   return (
     <Tr>
-      <Td>{match.teams.home}</Td>
-      <Td>{match.teams.away}</Td>
+      <Td>{match.home}</Td>
+      <Td>{match.away}</Td>
       <Td align='left'>
-        <NumberInput width='100px' defaultValue={200}>
+        <NumberInput width='100px' isDisabled defaultValue={200}>
           <NumberInputField />
           <NumberInputStepper></NumberInputStepper>
         </NumberInput>{" "}
@@ -35,12 +35,13 @@ const Row = ({ match, setPicks, index, picks, total, setTotal }) => {
         <RadioGroup>
           <Stack justifyContent='flex-start'>
             <Radio
-              value={match.odds.home}
               onChange={(e) => {
                 updateExpectedWin(e.target.value);
                 const pick = {
-                  matchID: match.id,
+                  id: match.matchId,
                   match,
+                  status: "pending",
+                  result: "",
                   predictedRes: "home",
                   expectedWin: e.target.value * 200,
                 };
@@ -48,15 +49,18 @@ const Row = ({ match, setPicks, index, picks, total, setTotal }) => {
                 newPicks[index] = pick;
                 setPicks(newPicks);
               }}
+              value={match.homeOdds.toString()}
             >
-              {match.odds.home}
+              {match.homeOdds}
             </Radio>
             <Radio
               onChange={(e) => {
                 updateExpectedWin(e.target.value);
                 const pick = {
-                  matchID: match.id,
+                  id: match.matchId,
                   match,
+                  status: "pending",
+                  result: "",
                   predictedRes: "draw",
                   expectedWin: e.target.value * 200,
                 };
@@ -64,16 +68,18 @@ const Row = ({ match, setPicks, index, picks, total, setTotal }) => {
                 newPicks[index] = pick;
                 setPicks(newPicks);
               }}
-              value={match.odds.draw}
+              value={match.drawOdds.toString()}
             >
-              {match.odds.draw}
+              {match.drawOdds}
             </Radio>
             <Radio
               onChange={(e) => {
                 updateExpectedWin(e.target.value);
                 const pick = {
-                  matchID: match.id,
+                  id: match.matchId,
                   match,
+                  status: "pending",
+                  result: "",
                   predictedRes: "away",
                   expectedWin: e.target.value * 200,
                 };
@@ -81,9 +87,9 @@ const Row = ({ match, setPicks, index, picks, total, setTotal }) => {
                 newPicks[index] = pick;
                 setPicks(newPicks);
               }}
-              value={match.odds.away}
+              value={match.awayOdds.toString()}
             >
-              {match.odds.away}
+              {match.awayOdds}
             </Radio>
           </Stack>
         </RadioGroup>

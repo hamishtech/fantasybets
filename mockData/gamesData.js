@@ -1,6 +1,6 @@
 export const games = [
   {
-    id: "13401390413",
+    id: "livman",
     teams: { home: "liverpool", away: "manutd" },
     odds: {
       home: (Math.random() + 1).toFixed(2),
@@ -9,7 +9,7 @@ export const games = [
     },
   },
   {
-    id: "1340131234413",
+    id: "citche",
     teams: { home: "city", away: "chelsea" },
     odds: {
       home: (Math.random() + 1).toFixed(2),
@@ -18,7 +18,7 @@ export const games = [
     },
   },
   {
-    id: "1340125290413",
+    id: "arseve",
     teams: { home: "arsenal", away: "everton" },
     odds: {
       home: (Math.random() + 1).toFixed(2),
@@ -27,7 +27,7 @@ export const games = [
     },
   },
   {
-    id: "2134123234",
+    id: "totsou",
     teams: { home: "spurs", away: "southampton" },
     odds: {
       home: (Math.random() + 1).toFixed(2),
@@ -36,7 +36,7 @@ export const games = [
     },
   },
   {
-    id: "213421345",
+    id: "wolbur",
     teams: { home: "wolves", away: "burnley" },
     odds: {
       home: (Math.random() + 1).toFixed(2),
@@ -45,7 +45,7 @@ export const games = [
     },
   },
   {
-    id: "21123341234",
+    id: "astwes",
     teams: { home: "astonVilla", away: "westham" },
     odds: {
       home: (Math.random() + 1).toFixed(2),
@@ -54,3 +54,12 @@ export const games = [
     },
   },
 ];
+
+export const results = {
+  citliv: { result: "home" },
+  cheman: { result: "away" },
+  souspu: { result: "home" },
+  leewes: { result: "draw" },
+  livman: { result: "draw" },
+  bureve: { result: "away" },
+};
