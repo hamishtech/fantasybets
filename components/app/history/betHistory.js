@@ -32,12 +32,16 @@ const BetHistory = ({ userDB }) => {
           {userDB.bets.length > 0
             ? userDB.bets.map((bet) => {
                 return (
-                  <Tr>
+                  <Tr key={bet.id}>
                     <Td>{bet.match.home}</Td> <Td>{bet.match.away}</Td>
                     <Td>{bet.predictedRes}</Td>
                     <Td>{bet.status}</Td>
                     <Td isNumeric>
-                      {bet.status === "won" ? bet.expectedWin : 0}
+                      {bet.status === "won"
+                        ? bet.expectedWin
+                        : bet.status === "pending"
+                        ? "pending"
+                        : -200}
                     </Td>
                   </Tr>
                 );

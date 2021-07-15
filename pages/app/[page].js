@@ -1,13 +1,15 @@
 import { getSession, withPageAuthRequired } from "@auth0/nextjs-auth0";
 import { Button, Center, Heading, Stack } from "@chakra-ui/react";
+import axios from "axios";
+import { ObjectID } from "mongodb";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import AppShell from "../../components/app/appShell";
 import BetsOverview from "../../components/app/bets";
 import BetHistory from "../../components/app/history/betHistory";
 import SetNickName from "../../components/app/home/setNickName";
+import Leaderboard from "../../components/app/leaderboard";
 import { useUserDBContext } from "../../context/UserDBContext";
-import { results } from "../../mockData/gamesData";
 import { connectToDatabase } from "../../util/mongodb";
 
 export default withPageAuthRequired(function Profile({ user, userDB }) {
@@ -25,14 +27,14 @@ export default withPageAuthRequired(function Profile({ user, userDB }) {
 
   if (page === "home") {
     return (
-      <AppShell user={user}>
+      <AppShell userDB={userDB}>
         <SetNickName isOpen={isOpen} userDB={userDB} setIsOpen={setIsOpen} />
       </AppShell>
     );
   }
   if (page === "bets") {
     return (
-      <AppShell user={user}>
+      <AppShell userDB={userDB}>
         <SetNickName isOpen={isOpen} userDB={userDB} setIsOpen={setIsOpen} />
         <BetsOverview user={user} />
       </AppShell>
@@ -40,15 +42,15 @@ export default withPageAuthRequired(function Profile({ user, userDB }) {
   }
   if (page === "leaderboard") {
     return (
-      <AppShell user={user}>
+      <AppShell userDB={userDB}>
         <SetNickName isOpen={isOpen} userDB={userDB} setIsOpen={setIsOpen} />
-        Leaderboard{" "}
+        <Leaderboard />
       </AppShell>
     );
   }
   if (page === "history") {
     return (
-      <AppShell user={user}>
+      <AppShell userDB={userDB}>
         <SetNickName isOpen={isOpen} userDB={userDB} setIsOpen={setIsOpen} />
         <BetHistory userDB={userDB} />
       </AppShell>
@@ -90,6 +92,10 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
+  const results = await db
+    .collection("results")
+    .findOne({ _id: ObjectID("60effab741222d111df5caf0") });
+
   //updating bets
   let updatedBets = userDB[0].bets;
   if (results && updatedBets.length > 0) {
@@ -108,7 +114,11 @@ export async function getServerSideProps({ req, res }) {
   let score = 0;
   updatedBets.forEach((bet) => {
     if (bet.status === "won") {
-      score += bet.expectedWin;
+      return (score += bet.expectedWin);
+    } else if (bet.status === "pending") {
+      return;
+    } else {
+      return (score -= 200);
     }
   });
   userDB[0].bets = updatedBets;

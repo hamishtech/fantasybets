@@ -54,12 +54,3 @@ export const games = [
     },
   },
 ];
-
-export const results = {
-  citliv: { result: "home" },
-  cheman: { result: "away" },
-  souspu: { result: "home" },
-  leewes: { result: "draw" },
-  livman: { result: "draw" },
-  bureve: { result: "away" },
-};

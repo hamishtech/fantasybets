@@ -1,20 +1,19 @@
 import {
   Button,
+  Spinner,
   Table,
   TableCaption,
   Tbody,
-  Tfoot,
   Text,
+  Tfoot,
   Th,
   Thead,
   Tr,
-  Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
 import React, { useEffect, useState } from "react";
 import { useUserDBContext } from "../../../context/UserDBContext";
-import { games } from "../../../mockData/gamesData";
 import Row from "./row";
 
 const BetsOverview = ({ user }) => {
@@ -40,19 +39,15 @@ const BetsOverview = ({ user }) => {
   };
 
   useEffect(() => {
-    let url =
-      "https://api.sheety.co/624b18d2ff226259304c9b8434a333c6/games/sheet1";
-    fetch(url)
-      .then((response) => response.json())
-      .then((result) => {
-        setMatches(result.sheet1);
-        setPicks(new Array(result.sheet1.length));
-        setTotal(
-          Array.apply(null, Array(result.sheet1.length)).map(function (x, i) {
-            return 0;
-          })
-        );
-      });
+    axios.get("../api/bets").then((result) => {
+      setMatches(result.data.bets);
+      setPicks(new Array(result.data.bets.length));
+      setTotal(
+        Array.apply(null, Array(result.data.bets.length)).map(function (x, i) {
+          return 0;
+        })
+      );
+    });
     return () => {};
   }, []);
 
@@ -61,6 +56,7 @@ const BetsOverview = ({ user }) => {
       if (userFromDB.bets.length > 0) {
         userFromDB.bets.forEach((bet) => {
           for (let i = 0; i < matches.length; i++) {
+            console.log(bet.id, matches[i].matchId);
             if (matches[i].matchId === bet.id) {
               return setAlreadyPlayed(true);
             }
@@ -74,8 +70,8 @@ const BetsOverview = ({ user }) => {
   if (alreadyPlayed) {
     return (
       <Text>
-        You have already played for this week, check history on the sidebar to
-        see what you have played
+        You have already played for this week, check your Bet History on the
+        sidebar
       </Text>
     );
   }

@@ -9,7 +9,7 @@ function MyApp({ Component, pageProps }) {
       <ChakraProvider theme={theme}>
         <UserDBContextWrapper>
           <Component {...pageProps} />
-        </UserDBContextWrapper>
+    </UserDBContextWrapper>
       </ChakraProvider>
     </UserProvider>
   );

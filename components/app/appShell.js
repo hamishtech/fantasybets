@@ -17,7 +17,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BsGearFill } from "react-icons/bs";
 import { FaRss } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
@@ -25,10 +25,9 @@ import { HiCollection } from "react-icons/hi";
 import { MdHome } from "react-icons/md";
 import { useUserDBContext } from "../../context/UserDBContext";
 
-export default function AppShell({ user, children }) {
+export default function AppShell({ user, children, userDB }) {
   const sidebar = useDisclosure();
   const router = useRouter();
-  const [userDBFromContext, setUserDBFromContext] = useUserDBContext();
 
   const NavItem = (props) => {
     const { icon, children, ...rest } = props;
@@ -154,12 +153,8 @@ export default function AppShell({ user, children }) {
           />
           <Box flexGrow='1'></Box>
           <Flex align='center'>
-            <Text mr={3}>
-              Points: {userDBFromContext ? userDBFromContext.score : null}
-            </Text>
-            <Text mr={3}>
-              {userDBFromContext ? userDBFromContext.nickName : null}
-            </Text>
+            <Text mr={3}>Points: {userDB.score}</Text>
+            <Text mr={3}>{userDB.nickName ? userDB.nickName : null}</Text>
             <Menu>
               <MenuButton
                 as={Button}
@@ -167,7 +162,7 @@ export default function AppShell({ user, children }) {
                 variant={"link"}
                 cursor={"pointer"}
               >
-                <Avatar size={"sm"} src={user.picture} />
+                <Avatar size={"sm"} name={userDB.nickName} />
               </MenuButton>
               <MenuList>
                 <MenuItem
